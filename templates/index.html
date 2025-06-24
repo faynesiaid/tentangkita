@@ -251,6 +251,22 @@
         }
 
         function spawnMovingBubble(name, avatarSrc) {
+            // 🔁 Hapus bubble jika melebihi batas
+            const maxBubbles = 100;
+            const currentBubbles = bubbleOverlay.children.length;
+            if (currentBubbles >= maxBubbles) {
+                const firstBubble = bubbleOverlay.firstChild;
+                if (firstBubble) {
+                    firstBubble.style.transition = 'opacity 0.5s';
+                    firstBubble.style.opacity = '0';
+                    setTimeout(() => {
+                        if (firstBubble.parentNode) {
+                            bubbleOverlay.removeChild(firstBubble);
+                        }
+                    }, 500);
+                }
+            }
+
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             bubble.style.backgroundColor = getRandomBubbleColor();
@@ -300,6 +316,7 @@
             bubble.style.top = `${y}px`;
             requestAnimationFrame(move);
         }
+
 
         async function createBubble(name) {
             return new Promise(async (resolve) => {
